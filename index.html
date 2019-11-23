@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Расчет развертки конуса</title>
+    <!--link rel="stylesheet" href="reset.css"-->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1 class="mainHeader">Расчет развертки конуса</h1>
+    <h3>Выбирите вариант исходных данных:</h3>
+    <input type="radio" class="inDataChoice" name="inDataVar" value="A" checked> d1, d2, &#945, S <br>
+    <input type="radio" class="inDataChoice" name="inDataVar" value="B"> d1, &#945, h, S <br>
+    <input type="radio" class="inDataChoice" name="inDataVar" value="C"> d1, d2, h, S <br>
+    <h2 class="inputHeader">Исходные данные</h2>
+    <table class="inData">
+        <tr class="inData__header">
+            <th class="inData__header__cell">d1, мм</th>
+            <th class="inData__header__cell">d2, мм</th>
+            <th class="inData__header__cell">&#945, &deg</th>
+            <th class="inData__header__cell">S, мм</th>
+        </tr>
+        <tr class="inData__input">
+            <td class="inData__input__cell"><input type="text" class="entryField inD1"></td>
+            <td class="inData__input__cell"><input type="text" class="entryField inD2"></td>
+            <td class="inData__input__cell"><input type="text" class="entryField inAlfa"></td>
+            <td class="inData__input__cell"><input type="text" class="entryField inS"></td>
+        </tr>
+    </table>
+    <p class="errorMess"></p>
+    <button class="buttCalculate">Расчитать</button>
+    <h2 class="outputHeader">Результаты расчета</h2>
+    <table class="outData">
+        <tr class="outData__header">
+            <th class="outData__header__cell">h, мм</th>
+            <th class="outData__header__cell">h1, мм</th>
+            <th class="outData__header__cell">&#945, &deg</th>
+            <th class="outData__header__cell">&#120593, &deg</th>
+            <th class="outData__header__cell">R1, мм</th>
+            <th class="outData__header__cell">R2, мм</th>
+            <th class="outData__header__cell">A, мм</th>
+            <th class="outData__header__cell">B, мм</th>
+            <th class="outData__header__cell">B1, мм</th>
+            <th class="outData__header__cell">H, мм</th>
+            <th class="outData__header__cell">F, м&sup2</th>
+            <th class="outData__header__cell">M, кг</th>
+        </tr>
+        <tr class="outData__output">
+            <td class="outData__output__cell outh"></td>
+            <td class="outData__output__cell outh1"></td>
+            <td class="outData__output__cell outAlfa"></td>
+            <td class="outData__output__cell outFi"></td>
+            <td class="outData__output__cell outR1"></td>
+            <td class="outData__output__cell outR2"></td>
+            <td class="outData__output__cell outA"></td>
+            <td class="outData__output__cell outB"></td>
+            <td class="outData__output__cell outB1"></td>
+            <td class="outData__output__cell outH"></td>
+            <td class="outData__output__cell outF"></td>
+            <td class="outData__output__cell outM"></td>
+        </tr>
+    </table>
+    <script src="script.js" defer></script>
+</body>
+</html>

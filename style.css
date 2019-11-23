@@ -1,0 +1,52 @@
+.inData {
+    border: 3px solid black;
+    border-collapse: collapse;
+    text-align: center;
+    margin: 20px;
+}
+.inData__header__cell {
+    padding: 5px;
+    border: 1px solid black;
+}
+.inData__input__cell {
+    padding: 0px;
+    border: 1px solid black;
+}
+.buttCalculate {
+    margin-left: 300px;
+}
+.outData {
+    border: 3px solid black;
+    border-collapse: collapse;
+    text-align: center;
+    margin: 20px;
+}
+.outData__header__cell {
+    width: 100px;
+    padding: 5px;
+    border: 1px solid black;
+}
+.outData__output__cell {
+    padding: 5px;
+    border: 1px solid black;
+    height: 20px;
+    text-align: center;
+}
+.entryField {
+    width: 100px;
+    text-align: center;
+    border: 0px;
+    height: 25px;
+}
+.errorMess {
+    color: red;
+    padding: 5px;
+    margin-left: 50px;
+    height: 10px;
+}
+.cell_red {
+    color: red;
+}
+.inDataChoice {
+    margin-left: 50px;
+}
