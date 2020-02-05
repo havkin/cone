@@ -17,19 +17,16 @@ let inputData = {
                 {name: "S", value: 0, classname: "inS", header: "S, мм"}],
 
     // флаг выбора варианта набора входных данных
-    variantFlag: 'A'
-}
+    variantFlag: 'variantA'
+};
 
 // объект ВЫЧИСЛЕНИЕ
-var computation = {
-    okrugl: function  (x, y) { // округляет число X  на Y знаков после запятой
-        return Math.round (x*Math.pow(10, y))/Math.pow (10, y);
-    },
+let computation = {
 
     cone: function  (dataSet) {
         var d1, d2, alfa, h, S, alfaRAD;
         switch (inputData.variantFlag){
-            case "A":
+            case "variantA":
                 d1 = Number(dataSet[0].value); // может заменить на parseFloat ?
                 d2 = Number(dataSet[1].value);
                 alfa = Number(dataSet[2].value);
@@ -37,7 +34,7 @@ var computation = {
                 alfaRAD = alfa*(Math.PI/180);
                 h = (d2 - d1)/(2*Math.tan(alfaRAD));
                 break;
-            case "B":
+            case "variantB":
                 d1 = Number(dataSet[0].value);
                 alfa = Number(dataSet[1].value);
                 h = Number(dataSet[2].value);
@@ -45,7 +42,7 @@ var computation = {
                 alfaRAD = alfa*(Math.PI/180);
                 d2 = d1 + 2 * h * Math.tan(alfaRAD); 
                 break;
-            case "C":
+            case "variantC":
                 d1 = Number(dataSet[0].value);
                 d2 = Number(dataSet[1].value);
                 h = Number(dataSet[2].value);
@@ -58,7 +55,7 @@ var computation = {
                 console.log ('error SWITСH in calculateCone');
         };
         var h1, fi, R1, R2, A, B, B1, H, F, M;
-        const RO = 7.85 //плотность материала
+        const RO = 7.85; //плотность материала
     
         //блок расчета
         var sinusALFA = Math.sin(alfaRAD);
@@ -77,22 +74,22 @@ var computation = {
         } else {
             B1 = 2*R2;
             H = R2* (1 + Math.sin(fiRAD/2 - Math.PI/2));
-        };// конец блок рассчета
+        } // конец блок расчёта
         
         
-        var outData = [  
-            {classname: "outh",    value: this.okrugl (h, 2)},
-            {classname: "outh1",   value: this.okrugl (h1, 2)},
-            {classname: "outAlfa", value: this.okrugl (alfa, 2)},
-            {classname: "outFi",   value: this.okrugl (fi, 2)},
-            {classname: "outR1",   value: this.okrugl (R1, 2)},
-            {classname: "outR2",   value: this.okrugl (R2, 2)},
-            {classname: "outA",    value: this.okrugl (A, 2)},
-            {classname: "outB",    value: this.okrugl (B, 2)},
-            {classname: "outB1",   value: this.okrugl (B1, 2)},
-            {classname: "outH",    value: this.okrugl (H, 2)},
-            {classname: "outF",    value: this.okrugl (F, 2)},
-            {classname: "outM",    value: this.okrugl (M, 2)}];
+        let outData = [  
+            {classname: "outh",    value: h.toFixed(2)},
+            {classname: "outh1",   value: h1.toFixed(2)},
+            {classname: "outAlfa", value: alfa.toFixed(2)},
+            {classname: "outFi",   value: fi.toFixed(2)},
+            {classname: "outR1",   value: R1.toFixed(2)},
+            {classname: "outR2",   value: R2.toFixed(2)},
+            {classname: "outA",    value: A.toFixed(2)},
+            {classname: "outB",    value: B.toFixed(2)},
+            {classname: "outB1",   value: B1.toFixed(2)},
+            {classname: "outH",    value: H.toFixed(2)},
+            {classname: "outF",    value: F.toFixed(2)},
+            {classname: "outM",    value: M.toFixed(2)}];
         
         return outData;
     }
@@ -101,11 +98,12 @@ var computation = {
 
 // объект ВВОД-ВЫВОД ДАННЫХ
 var dataManager = {
+
     inDataTableInit: function  (inDataVar){
         var tableHead = document.getElementsByClassName ("inData__header__cell");
         var tableRow = document.getElementsByClassName ("entryField");
     
-        for (var i=0; i<tableHead.length; i++){
+        for (let i=0; i<tableHead.length; i++){
             tableHead[i].textContent = inDataVar[i].header;
             tableRow[i].setAttribute("class", ("entryField " + inDataVar[i].classname));
             tableRow[i].value = "";
@@ -115,13 +113,13 @@ var dataManager = {
         this.displayErrorMess ("");
 
         var inDataHeader = document.getElementsByClassName ("inData__header__cell");
-        for (var i=0; i<inDataHeader.length; i++) {
+        for (let i=0; i<inDataHeader.length; i++) {
             if (inDataHeader[i].classList.contains("cell_red")) { inDataHeader[i].classList.remove("cell_red")};
-        };
+        }
         var outDataRow = document.getElementsByClassName ('outData__output__cell');
-        for (var i=0; i<outDataRow.length; i++) {
+        for (let i=0; i<outDataRow.length; i++) {
             outDataRow[i].textContent = "";
-        };
+        }
     },
 
     readInput: function  (cell) {
@@ -155,12 +153,12 @@ var dataManager = {
                 } else { 
                     if (inDataHeader[j].classList.contains("cell_red")) { 
                         inDataHeader[j].classList.remove("cell_red")};
-                };
-            };
+                }
+            }
             this.displayErrorMess ("Введите корректное значение для:" + errCells.slice(0, -2) + ".");
             return true;
-        };
-        for (var i=0; i<inDataHeader.length; i++) {
+        }
+        for (let i=0; i<inDataHeader.length; i++) {
             if (inDataHeader[i].classList.contains("cell_red")) { inDataHeader[i].classList.remove("cell_red")};
         };
         this.displayErrorMess ("");
@@ -196,37 +194,29 @@ function init () {
     });
 }
 
-function handleChoice(eventObj) {
-    var guess = eventObj.target;
-    switch (guess.value){
-        case "A":
-            dataManager.inDataTableInit (inputData.variantA);
-            inputData.variantFlag = 'A';
-            break;
-        case "B":
-            dataManager.inDataTableInit (inputData.variantB);
-            inputData.variantFlag = 'B';
-            break;
-        case "C":
-            dataManager.inDataTableInit (inputData.variantC);
-            inputData.variantFlag = 'C';
-            break;
-        default:
-        // сообщение об ошибке
-        console.log ('error SWITCH in handleChoice');
-    };
-};
+
+/**
+ *функция инициализирует таблицу входных данных,
+ в зависимости от выбранного варианта этих данных
+ *
+ * @param {*} event - клик на радио кнопке
+ */
+function handleChoice(event) {
+
+    dataManager.inDataTableInit (inputData[event.target.value]);
+    inputData.variantFlag = event.target.value;
+}
 
 function handleCalculate () {
     var inData = [];
     switch (inputData.variantFlag){
-        case "A":
+        case "variantA":
             inData = inputData.variantA;
             break;
-        case "B":
+        case "variantB":
             inData = inputData.variantB;
             break;
-        case "C":
+        case "variantC":
             inData = inputData.variantC;
             break;
         default:
