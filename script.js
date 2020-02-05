@@ -30,14 +30,23 @@ var inDataVariantFlag = 'A';
 function Okrugl (x, y) { // округляет число X  на Y знаков после запятой, не добавляет нули
     return Math.round (x*Math.pow(10, y))/Math.pow (10, y);
 };
+
+
+
+/**
+ *функция инициализации приложения
+ *
+ */
 function init () {
-    var start = document.getElementsByClassName ("buttCalculate");
-    start [0].onclick = handleCalculate;
-    var radio = document.getElementsByClassName ("inDataChoice");
-    for (var i=0; i<radio.length; i++) {
-        radio[i].onclick = handleChoice;
-    };
-};
+
+    const calcBtn = document.querySelector (".buttCalculate");
+    calcBtn.addEventListener('click', handleCalculate);
+
+    const radioBtns = document.querySelectorAll (".inDataChoice");
+    radioBtns.forEach((btn) => {
+        btn.addEventListener('click', handleChoice);
+    });
+}
 
 function handleChoice(eventObj) {
     var guess = eventObj.target;
@@ -187,7 +196,7 @@ function calculateCone (dataSet) {
         B1 = 2*R2;
         H = R2* (1 + Math.sin(fiRAD/2 - Math.PI/2));
     };
-    // конец блок рассчета
+    // конец блок расчета
 
     outputData[0].value = Okrugl (h, 2);
     outputData[1].value = Okrugl (h1, 2);
