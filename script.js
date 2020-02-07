@@ -274,9 +274,15 @@ let dataManager = {
         return false;
     },
 
-    displayErrorMess: function (msg) {
-        var messageArea = document.getElementsByClassName("errorMess");
-        messageArea[0].textContent = msg;
+
+    /**
+     *метод выводит сообщение об ошибке
+     *
+     * @param {string} msg - текст сообщения
+     */
+    displayErrorMess (msg) {
+        let messageArea = document.querySelector(".errorMess");
+        messageArea.textContent = msg;
     },
 
     clearRow: function (row) {
