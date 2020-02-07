@@ -4,7 +4,7 @@
     text-align: center;
     margin: 20px;
 }
-.inData__header__cell {
+.inData__header_cell {
     padding: 5px;
     border: 1px solid black;
 }
@@ -26,7 +26,7 @@
     padding: 5px;
     border: 1px solid black;
 }
-.outData__output__cell {
+.outData__output_cell {
     padding: 5px;
     border: 1px solid black;
     height: 20px;
