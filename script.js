@@ -87,112 +87,78 @@ let inputData = {
 let computation = {
 
     cone: function (dataSet) {
-        var d1, d2, alfa, h, S, alfaRAD;
+
+        let d1 = +dataSet[0].value;
+        let S = +dataSet[3].value;
+        let d2, alfa, h, alfaRAD;
+
         switch (inputData.variantFlag) {
             case "variantA":
-                d1 = Number(dataSet[0].value); // может заменить на parseFloat ?
                 d2 = Number(dataSet[1].value);
                 alfa = Number(dataSet[2].value);
-                S = Number(dataSet[3].value);
                 alfaRAD = alfa * (Math.PI / 180);
                 h = (d2 - d1) / (2 * Math.tan(alfaRAD));
                 break;
             case "variantB":
-                d1 = Number(dataSet[0].value);
                 alfa = Number(dataSet[1].value);
                 h = Number(dataSet[2].value);
-                S = Number(dataSet[3].value);
                 alfaRAD = alfa * (Math.PI / 180);
                 d2 = d1 + 2 * h * Math.tan(alfaRAD);
                 break;
             case "variantC":
-                d1 = Number(dataSet[0].value);
                 d2 = Number(dataSet[1].value);
                 h = Number(dataSet[2].value);
-                S = Number(dataSet[3].value);
                 alfaRAD = Math.atan((d2 - d1) / (2 * h));
                 alfa = alfaRAD / (Math.PI / 180);
                 break;
             default:
                 // сообщение об ошибке
                 console.log('error SWITСH in calculateCone');
-        };
-        var h1, fi, R1, R2, A, B, B1, H, F, M;
+        }
+
         const RO = 7.85; //плотность материала
 
         //блок расчета
-        var sinusALFA = Math.sin(alfaRAD);
-        h1 = h + S * sinusALFA;
-        fi = 360 * sinusALFA;
-        var fiRAD = fi * (Math.PI / 180);
-        R1 = d1 / (2 * sinusALFA);
-        R2 = d2 / (2 * sinusALFA);
-        A = 2 * R1 * Math.sin(fiRAD / 2);
-        B = 2 * R2 * Math.sin(fiRAD / 2);
-        F = Math.PI * (R2 * R2 - R1 * R1) * sinusALFA * Math.pow(10, -6);
-        M = RO * S * F;
+        let sinusALFA = Math.sin(alfaRAD);
+        let h1 = h + S * sinusALFA;
+        let fi = 360 * sinusALFA;
+        let fiRAD = fi * (Math.PI / 180);
+        let R1 = d1 / (2 * sinusALFA);
+        let R2 = d2 / (2 * sinusALFA);
+        let A = 2 * R1 * Math.sin(fiRAD / 2);
+        let B = 2 * R2 * Math.sin(fiRAD / 2);
+        let F = Math.PI * (R2 * R2 - R1 * R1) * sinusALFA * Math.pow(10, -6);
+        let M = RO * S * F;
+
+        let B1, H;
         if (alfa <= 30) {
             B1 = B;
             H = R2 - R1 * Math.cos(fiRAD / 2);
         } else {
             B1 = 2 * R2;
             H = R2 * (1 + Math.sin(fiRAD / 2 - Math.PI / 2));
-        } // конец блок расчёта
+        }
+        // конец блок расчёта
 
 
-        let outData = [{
-                classname: "outh",
-                value: h.toFixed(2)
-            },
-            {
-                classname: "outh1",
-                value: h1.toFixed(2)
-            },
-            {
-                classname: "outAlfa",
-                value: alfa.toFixed(2)
-            },
-            {
-                classname: "outFi",
-                value: fi.toFixed(2)
-            },
-            {
-                classname: "outR1",
-                value: R1.toFixed(2)
-            },
-            {
-                classname: "outR2",
-                value: R2.toFixed(2)
-            },
-            {
-                classname: "outA",
-                value: A.toFixed(2)
-            },
-            {
-                classname: "outB",
-                value: B.toFixed(2)
-            },
-            {
-                classname: "outB1",
-                value: B1.toFixed(2)
-            },
-            {
-                classname: "outH",
-                value: H.toFixed(2)
-            },
-            {
-                classname: "outF",
-                value: F.toFixed(2)
-            },
-            {
-                classname: "outM",
-                value: M.toFixed(2)
-            }
-        ];
+        let outData = {
+            'outh': h.toFixed(2),
+            'outh1': h1.toFixed(2),
+            'outAlfa': alfa.toFixed(2),
+            'outFi': fi.toFixed(2),
+            'outR1': R1.toFixed(2),
+            'outR2': R2.toFixed(2),
+            'outA': A.toFixed(2),
+            'outB': B.toFixed(2),
+            'outB1': B1.toFixed(2),
+            'outH': H.toFixed(2),
+            'outF': F.toFixed(2),
+            'outM': M.toFixed(2)
+        };
+
 
         return outData;
     }
-
 };
 
 // объект ВВОД-ВЫВОД ДАННЫХ
@@ -228,13 +194,21 @@ let dataManager = {
     },
 
     readInput: function (cell) {
-        var inData = document.getElementsByClassName(cell);
+        let inData = document.getElementsByClassName(cell);
         return inData[0].value;
     },
 
-    writeResult: function (cell, dataVar) {
-        var outData = document.getElementsByClassName(cell);
-        outData[0].textContent = dataVar;
+
+    /**
+     *метод выводит результаты на экран
+     *
+     * @param {Object} results - объект с результатами вычислений
+     */
+    writeResult (results) {
+        for (let name in results) {
+            let outData = document.querySelector(`.${name}`);
+            outData.textContent = results[name]
+        }
     },
 
     wrongInputData: function (dataSet) { // проверяем полноту (ячейка ввода не пустая) и корректность входных данных (неотрицательное числовое значение)
@@ -280,7 +254,7 @@ let dataManager = {
      *
      * @param {string} msg - текст сообщения
      */
-    displayErrorMess (msg) {
+    displayErrorMess(msg) {
         let messageArea = document.querySelector(".errorMess");
         messageArea.textContent = msg;
     },
@@ -314,7 +288,7 @@ function init() {
  *функция инициализирует таблицу входных данных,
  *в зависимости от выбранного варианта этих данных
  *
- * @param {*} event - клик на радио кнопке
+ * @param {} event - клик на радио кнопке
  */
 function handleChoice(event) {
 
@@ -323,32 +297,23 @@ function handleChoice(event) {
 }
 
 function handleCalculate() {
-    var inData = [];
-    switch (inputData.variantFlag) {
-        case "variantA":
-            inData = inputData.variantA;
-            break;
-        case "variantB":
-            inData = inputData.variantB;
-            break;
-        case "variantC":
-            inData = inputData.variantC;
-            break;
-        default:
-            // сообщение об ошибке
-            console.log('error SWITCH in handleCalculate');
-    };
-    for (var i = 0; i < inData.length; i++) {
+
+    let inData = inputData[inputData.variantFlag];
+
+    for (let i = 0; i < inData.length; i++) {
         inData[i].value = dataManager.readInput(inData[i].classname);
-    };
+    }
+
     if (dataManager.wrongInputData(inData)) { //очищаем строку с результатами и выходим
         dataManager.clearRow('outData__output_cell');
         return;
-    };
-    var calcResults = computation.cone(inData);
-    for (var i = 0; i < calcResults.length; i++) {
-        dataManager.writeResult(calcResults[i].classname, calcResults[i].value);
-    };
-};
+    }
+
+    let calcResults = computation.cone(inData);
+    dataManager.writeResult(calcResults);
+    // for (let i = 0; i < calcResults.length; i++) {
+    //     dataManager.writeResult(calcResults[i].classname, calcResults[i].value);
+    // }
+}
 
 init();
