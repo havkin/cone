@@ -184,8 +184,6 @@ let dataManager = {
             inDataVar[i].value = 0;
         }
 
-        this.displayErrorMess("");
-
         let outDataRow = document.querySelectorAll('.outData__output_cell');
         outDataRow.forEach((cell) => {
             cell.textContent = "";

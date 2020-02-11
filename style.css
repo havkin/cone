@@ -21,7 +21,7 @@
     text-align: center;
     margin: 20px;
 }
-.outData__header__cell {
+.outData__header_cell {
     width: 100px;
     padding: 5px;
     border: 1px solid black;
@@ -38,15 +38,7 @@
     border: 0px;
     height: 25px;
 }
-.errorMess {
-    color: red;
-    padding: 5px;
-    margin-left: 50px;
-    height: 10px;
-}
-.cell_red {
-    color: red;
-}
+
 .inDataChoice {
     margin-left: 50px;
 }
