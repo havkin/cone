@@ -156,7 +156,6 @@ let computation = {
             'outM': M.toFixed(2)
         };
 
-
         return outData;
     }
 };
@@ -207,64 +206,10 @@ let dataManager = {
     writeResult (results) {
         for (let name in results) {
             let outData = document.querySelector(`.${name}`);
-            outData.textContent = results[name]
+            outData.textContent = results[name];
         }
     },
 
-    wrongInputData: function (dataSet) { // проверяем полноту (ячейка ввода не пустая) и корректность входных данных (неотрицательное числовое значение)
-        var inData = document.getElementsByClassName("entryField");
-        var inDataHeader = document.getElementsByClassName("inData__header_cell");
-        var wrongData = []; // массив будет собирать индексы ячеек с некорректно введенными данными
-        var errCells = " ";
-        for (var cellIndex = 0; cellIndex < inData.length; cellIndex++) {
-            if (isNaN(inData[cellIndex].value) || inData[cellIndex].value <= 0) {
-                wrongData.push(cellIndex);
-            };
-        };
-        if (wrongData.length > 0) {
-            for (var i = 0; i < wrongData.length; i++) {
-                errCells = errCells + dataSet[wrongData[i]].name + ", ";
-            };
-            for (var j = 0; j < inDataHeader.length; j++) {
-                if (wrongData.includes(j)) {
-                    if (!inDataHeader[j].classList.contains("cell_red")) {
-                        inDataHeader[j].classList.add("cell_red")
-                    };
-                } else {
-                    if (inDataHeader[j].classList.contains("cell_red")) {
-                        inDataHeader[j].classList.remove("cell_red")
-                    };
-                }
-            }
-            this.displayErrorMess("Введите корректное значение для:" + errCells.slice(0, -2) + ".");
-            return true;
-        }
-        for (let i = 0; i < inDataHeader.length; i++) {
-            if (inDataHeader[i].classList.contains("cell_red")) {
-                inDataHeader[i].classList.remove("cell_red")
-            };
-        };
-        this.displayErrorMess("");
-        return false;
-    },
-
-
-    /**
-     *метод выводит сообщение об ошибке
-     *
-     * @param {string} msg - текст сообщения
-     */
-    displayErrorMess(msg) {
-        let messageArea = document.querySelector(".errorMess");
-        messageArea.textContent = msg;
-    },
-
-    clearRow: function (row) {
-        var dataRow = document.getElementsByClassName(row);
-        for (var i = 0; i < dataRow.length; i++) {
-            dataRow[i].textContent = "";
-        };
-    }
 };
 
 
@@ -281,8 +226,43 @@ function init() {
     radioBtns.forEach((btn) => {
         btn.addEventListener('click', handleChoice);
     });
+
+    const entryFields = document.querySelectorAll(".entryField");
+    entryFields.forEach((cell) => {
+        cell.addEventListener('keypress', inDataCheck);
+        cell.addEventListener('input', completeDataCheck);
+    });
 }
 
+
+/**
+ *функция позволяет вводить только цифры и одну разделительную точку
+ *
+ * @param {*} event
+ */
+function inDataCheck (event) {
+    if ( !(/\d|\./).test(event.key) ) {
+        event.preventDefault();
+    }
+    if ( event.key === '.' && event.target.value.includes('.')) {
+        event.preventDefault();
+    }
+}
+
+
+/**
+ *функция разблокирует кнопку "Рассчитать"
+ *при заполнении всех входных данных и наоборот
+ */
+function completeDataCheck() {
+    const entryFields = [...document.querySelectorAll(".entryField")];
+    const calcBtn = document.querySelector(".buttCalculate");
+    if ( entryFields.every( (cell) => cell.value )) {
+        calcBtn.removeAttribute('disabled');
+    } else {
+        calcBtn.setAttribute('disabled', 'disabled');
+    }
+}
 
 /**
  *функция инициализирует таблицу входных данных,
@@ -304,16 +284,8 @@ function handleCalculate() {
         inData[i].value = dataManager.readInput(inData[i].classname);
     }
 
-    if (dataManager.wrongInputData(inData)) { //очищаем строку с результатами и выходим
-        dataManager.clearRow('outData__output_cell');
-        return;
-    }
-
     let calcResults = computation.cone(inData);
     dataManager.writeResult(calcResults);
-    // for (let i = 0; i < calcResults.length; i++) {
-    //     dataManager.writeResult(calcResults[i].classname, calcResults[i].value);
-    // }
 }
 
 init();
