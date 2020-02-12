@@ -1,113 +1,49 @@
 // объект ВХОДНЫЕ ДАННЫЕ
 let inputData = {
     // варианты набора входных данных
-    variantA: [{
-            name: "d1",
-            value: 0,
-            classname: "inD1",
-            header: "d1, мм"
-        },
-        {
-            name: "d2",
-            value: 0,
-            classname: "inD2",
-            header: "d2, мм"
-        },
-        {
-            name: "\u03B1",
-            value: 0,
-            classname: "inAlfa",
-            header: "\u03B1, \u00B0"
-        },
-        {
-            name: "S",
-            value: 0,
-            classname: "inS",
-            header: "S, мм"
-        }
-    ],
+    variantA: ["inD1", "inD2", "inAlfa", "inS"],
 
-    variantB: [{
-            name: "d1",
-            value: 0,
-            classname: "inD1",
-            header: "d1, мм"
-        },
-        {
-            name: "\u03B1",
-            value: 0,
-            classname: "inAlfa",
-            header: "\u03B1, \u00B0"
-        },
-        {
-            name: "h",
-            value: 0,
-            classname: "inh",
-            header: "h, мм"
-        },
-        {
-            name: "S",
-            value: 0,
-            classname: "inS",
-            header: "S, мм"
-        }
-    ],
+    variantB: ["inD1", "inAlfa", "inh", "inS"],
 
-    variantC: [{
-            name: "d1",
-            value: 0,
-            classname: "inD1",
-            header: "d1, мм"
-        },
-        {
-            name: "d2",
-            value: 0,
-            classname: "inD2",
-            header: "d2, мм"
-        },
-        {
-            name: "h",
-            value: 0,
-            classname: "inh",
-            header: "h, мм"
-        },
-        {
-            name: "S",
-            value: 0,
-            classname: "inS",
-            header: "S, мм"
-        }
-    ],
+    variantC: ["inD1", "inD2", "inh", "inS"],
 
-    // флаг выбора варианта набора входных данных
     variantFlag: 'variantA'
 };
+
+const headers = {
+    'inD1': "d1, мм",
+    'inD2': "d2, мм",
+    'inAlfa': "\u03B1, \u00B0",
+    'inS': "S, мм",
+    'inh': "h, мм"
+};
+
 
 // объект ВЫЧИСЛЕНИЕ
 let computation = {
 
     cone: function (dataSet) {
 
-        let d1 = +dataSet[0].value;
-        let S = +dataSet[3].value;
+        let d1 = +dataSet[0];
+        let S = +dataSet[3];
         let d2, alfa, h, alfaRAD;
 
         switch (inputData.variantFlag) {
             case "variantA":
-                d2 = Number(dataSet[1].value);
-                alfa = Number(dataSet[2].value);
+                d2 = +dataSet[1];
+                alfa = +dataSet[2];
                 alfaRAD = alfa * (Math.PI / 180);
                 h = (d2 - d1) / (2 * Math.tan(alfaRAD));
                 break;
             case "variantB":
-                alfa = Number(dataSet[1].value);
-                h = Number(dataSet[2].value);
+                alfa = +dataSet[1];
+                h = +dataSet[2];
                 alfaRAD = alfa * (Math.PI / 180);
                 d2 = d1 + 2 * h * Math.tan(alfaRAD);
                 break;
             case "variantC":
-                d2 = Number(dataSet[1].value);
-                h = Number(dataSet[2].value);
+                d2 = +dataSet[1];
+                h = +dataSet[2];
                 alfaRAD = Math.atan((d2 - d1) / (2 * h));
                 alfa = alfaRAD / (Math.PI / 180);
                 break;
@@ -169,19 +105,17 @@ let dataManager = {
      *
      * @param {Object} inDataVar - вариант набора входных данных
      */
-    inDataTableInit: function (inDataVar) {
+    inDataTableInit: function () {
         let tableHead = document.querySelectorAll(".inData__header_cell");
         let tableRow = document.querySelectorAll(".entryField");
+        let inDataVar = inputData[inputData.variantFlag];
 
         for (let i = 0; i < tableHead.length; i++) {
 
-            tableHead[i].textContent = inDataVar[i].header;
-            if (tableHead[i].classList.contains("cell_red")) {
-                tableHead[i].classList.remove("cell_red");
-            }
-            tableRow[i].setAttribute("class", ("entryField " + inDataVar[i].classname));
+            tableHead[i].textContent = headers[inDataVar[i]];
+
+            tableRow[i].setAttribute("class", ("entryField " + inDataVar[i]));
             tableRow[i].value = "";
-            inDataVar[i].value = 0;
         }
 
         let outDataRow = document.querySelectorAll('.outData__output_cell');
@@ -190,9 +124,16 @@ let dataManager = {
         });
     },
 
-    readInput: function (cell) {
-        let inData = document.getElementsByClassName(cell);
-        return inData[0].value;
+    
+    /**
+     *метод считывает введенные данные
+     *
+     * @returns {Array} возвращает массив значений
+     */
+    readInput () {
+
+        let inData = [...document.querySelectorAll('.entryField')];
+        return inData.map((cell) => cell.value);
     },
 
 
@@ -201,13 +142,13 @@ let dataManager = {
      *
      * @param {Object} results - объект с результатами вычислений
      */
-    writeResult (results) {
+    writeResult(results) {
+
         for (let name in results) {
             let outData = document.querySelector(`.${name}`);
             outData.textContent = results[name];
         }
     },
-
 };
 
 
@@ -238,11 +179,11 @@ function init() {
  *
  * @param {*} event
  */
-function inDataCheck (event) {
-    if ( !(/\d|\./).test(event.key) ) {
+function inDataCheck(event) {
+    if (!(/\d|\./).test(event.key)) {
         event.preventDefault();
     }
-    if ( event.key === '.' && event.target.value.includes('.')) {
+    if (event.key === '.' && event.target.value.includes('.')) {
         event.preventDefault();
     }
 }
@@ -255,7 +196,7 @@ function inDataCheck (event) {
 function completeDataCheck() {
     const entryFields = [...document.querySelectorAll(".entryField")];
     const calcBtn = document.querySelector(".buttCalculate");
-    if ( entryFields.every( (cell) => cell.value )) {
+    if (entryFields.every((cell) => cell.value)) {
         calcBtn.removeAttribute('disabled');
     } else {
         calcBtn.setAttribute('disabled', 'disabled');
@@ -270,20 +211,14 @@ function completeDataCheck() {
  */
 function handleChoice(event) {
 
-    dataManager.inDataTableInit(inputData[event.target.value]);
     inputData.variantFlag = event.target.value;
+    dataManager.inDataTableInit();
 }
 
 function handleCalculate() {
 
-    let inData = inputData[inputData.variantFlag];
-
-    for (let i = 0; i < inData.length; i++) {
-        inData[i].value = dataManager.readInput(inData[i].classname);
-    }
-
-    let calcResults = computation.cone(inData);
-    dataManager.writeResult(calcResults);
+    let calcResults = computation.cone( dataManager.readInput() );
+    dataManager.writeResult( calcResults );
 }
 
 init();
