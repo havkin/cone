@@ -122,6 +122,9 @@ let dataManager = {
         outDataRow.forEach((cell) => {
             cell.textContent = "";
         });
+
+        const calcBtn = document.querySelector(".buttCalculate");
+        calcBtn.setAttribute('disabled', 'disabled');
     },
 
     
